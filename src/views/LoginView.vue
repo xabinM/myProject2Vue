@@ -29,7 +29,7 @@ const login = async () => {
     localStorage.setItem('jwt_token', res.data.token);
     router.push('/dashboard');
   } catch (e) {
-    error.value = '로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.';
+    error.value = e.response?.data?.message || '로그인에 실패했습니다.';
   }
 };
 </script>
