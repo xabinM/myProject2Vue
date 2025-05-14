@@ -28,7 +28,7 @@ const login = async () => {
     }, {
        withCredentials: true
     });
-    
+
     router.push('/dashboard');
   } catch (e) {
     error.value = e.response?.data?.message || '로그인에 실패했습니다.';

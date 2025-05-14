@@ -13,4 +13,24 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach(async (to, from, next) => {
+  const isAuthPage = to.path === '/login' || to.path === '/signup'; // 로그인 또는 회원가입 페이지 접근 요청인가?
+
+  try {
+    const res = await axios.get('/auth/check', { withCredentials: true}); // /auth/check로 GET 요청 보내
+
+    if (res.status === 200 && isAuthPage) { // 반환 코드가 200이면
+
+        return next('/123');
+    }
+  
+    next();
+  } catch (e) {
+    if (!isAuthPage) {
+      return next('/login');
+    }
+    next();
+  }
+});
+
 export default router;
