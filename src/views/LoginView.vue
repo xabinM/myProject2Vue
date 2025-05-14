@@ -25,8 +25,10 @@ const login = async () => {
     const res = await axios.post('/auth/login', {
       username: username.value,
       password: password.value,
+    }, {
+       withCredentials: true
     });
-    localStorage.setItem('jwt_token', res.data.token);
+    
     router.push('/dashboard');
   } catch (e) {
     error.value = e.response?.data?.message || '로그인에 실패했습니다.';
