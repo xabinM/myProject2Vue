@@ -28,8 +28,9 @@ const login = async () => {
     }, {
        withCredentials: true
     });
+    window.location.reload();
 
-    router.push('/dashboard');
+    router.push('/main');
   } catch (e) {
     error.value = e.response?.data?.message || '로그인에 실패했습니다.';
   }

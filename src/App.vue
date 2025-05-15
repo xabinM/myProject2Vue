@@ -1,11 +1,14 @@
 <template>
+  <Header />
   <router-view />
 </template>
 
 <script setup>
-// 아무것도 안 넣어도 됨
+import Header from './components/Header.vue';
+
 </script>
 
 <style scoped>
-/* 필요하면 스타일 추가 */
+
+
 </style>
