@@ -39,9 +39,8 @@ const login = async () => {
 
 <style scoped>
 .login-container {
-  align-content: center;
   max-width: 300px;
-  margin: auto;
+  margin: 80px auto 0 auto;
   padding: 20px;
 }
 .error {
