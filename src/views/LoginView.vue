@@ -14,22 +14,32 @@
 import { ref } from 'vue';
 import axios from '../axios';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 
 const username = ref('');
 const password = ref('');
 const error = ref('');
 const router = useRouter();
+const userStore = useUserStore();
 
 const login = async () => {
   try {
-    const res = await axios.post('/auth/login', {
+    await axios.post('/auth/login', {
       username: username.value,
       password: password.value,
-    }, {
-       withCredentials: true
     });
-    window.location.reload();
+    console.log("여기는?")
+    const { member, token } = res.data;
+    
+    console.log("member : ", member);
+    console.log("token", token);
+    console.log("여기는요오오오오")
+    userStore.setUser({ token, ...member });
 
+
+    const res = await axios.get('/member/memberInfo');
+    userStore.setUser(res.data);
+    console.log("왓음?")
     router.push('/main');
   } catch (e) {
     error.value = e.response?.data?.message || '로그인에 실패했습니다.';

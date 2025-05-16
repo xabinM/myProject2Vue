@@ -31,21 +31,21 @@ const menuVisible = ref(false)
 const router = useRouter()
 
 const checkAuth = async () => {
-  try {
-    const res = await axios.get('/auth/check', { withCredentials: true })
-    if (res.status === 200) {
-      isLoggedIn.value = true
-      const userInfoRes = await axios.get('/member/memberInfo', { withCredentials: true })
-      user.value = userInfoRes.data
-    }
-  } catch {
-    isLoggedIn.value = false
+  const token = localStorage.getItem('access_token');
+  const savedUser = JSON.parse(localStorage.getItem('user'));
+
+  if (token && savedUser) {
+    isLoggedIn.value = true;
+    user.value = savedUser;
+  } else {
+    isLoggedIn.value = false;
+    user.value = { username: '', email: '' };
   }
 }
 
 const logout = async () => {
   try {
-    await axios.post('/auth/logout', {}, { withCredentials: true })
+    await axios.post('/auth/logout', {})
     isLoggedIn.value = false
     user.value = { username: '', email: '' }
     menuVisible.value = false;
