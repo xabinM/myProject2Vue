@@ -21,35 +21,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
 import axios from '@/axios'
 
-const isLoggedIn = ref(false)
-const user = ref({ username: '', email: '' })
-const menuVisible = ref(false)
-const router = useRouter()
+const router = useRouter();
+const userStore = useUserStore();
 
-const checkAuth = async () => {
-  const token = localStorage.getItem('access_token');
-  const savedUser = JSON.parse(localStorage.getItem('user'));
+const isLoggedIn = computed(() => !!userStore.token);
+const user = computed(() => userStore.user);
 
-  if (token && savedUser) {
-    isLoggedIn.value = true;
-    user.value = savedUser;
-  } else {
-    isLoggedIn.value = false;
-    user.value = { username: '', email: '' };
-  }
-}
+const menuVisible = ref(false);
 
 const logout = async () => {
   try {
     await axios.post('/auth/logout', {})
-    isLoggedIn.value = false
-    user.value = { username: '', email: '' }
+    userStore.clearUser();
     menuVisible.value = false;
-    router.push('/')
+
+    router.push('/');
   } catch (e) {
     console.error('로그아웃 실패:', e)
   }
@@ -59,9 +50,6 @@ const toggleMenu = () => {
   menuVisible.value = !menuVisible.value
 }
 
-onMounted(() => {
-  checkAuth()
-})
 </script>
 
 
@@ -82,7 +70,7 @@ onMounted(() => {
   color: #333;
 }
 
-.nav > * {
+.nav>* {
   margin-left: 12px;
   text-decoration: none;
   color: #333;
@@ -106,18 +94,17 @@ onMounted(() => {
   z-index: 10;
 }
 
-.dropdown > * {
+.dropdown>* {
   margin: 4px 0;
   text-decoration: none;
   color: #333;
 }
 
-.dropdown > button {
+.dropdown>button {
   background: none;
   border: none;
   cursor: pointer;
   text-align: left;
   padding: 0;
 }
-
 </style>

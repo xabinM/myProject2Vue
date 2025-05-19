@@ -24,22 +24,15 @@ const userStore = useUserStore();
 
 const login = async () => {
   try {
-    await axios.post('/auth/login', {
+    const res = await axios.post('/auth/login', {
       username: username.value,
       password: password.value,
     });
-    console.log("여기는?")
+
     const { member, token } = res.data;
-    
-    console.log("member : ", member);
-    console.log("token", token);
-    console.log("여기는요오오오오")
+
     userStore.setUser({ token, ...member });
 
-
-    const res = await axios.get('/member/memberInfo');
-    userStore.setUser(res.data);
-    console.log("왓음?")
     router.push('/main');
   } catch (e) {
     error.value = e.response?.data?.message || '로그인에 실패했습니다.';
@@ -53,6 +46,7 @@ const login = async () => {
   margin: 80px auto 0 auto;
   padding: 20px;
 }
+
 .error {
   color: red;
   margin-top: 10px;
