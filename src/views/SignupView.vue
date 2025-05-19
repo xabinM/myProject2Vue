@@ -53,10 +53,12 @@ const signup = async () => {
   margin: auto;
   padding: 20px;
 }
+
 .error {
   color: red;
   margin-top: 10px;
 }
+
 .success {
   color: green;
   margin-top: 10px;

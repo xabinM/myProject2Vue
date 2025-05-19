@@ -36,7 +36,6 @@ const menuVisible = ref(false);
 
 const logout = async () => {
   try {
-    await axios.post('/auth/logout', {})
     userStore.clearUser();
     menuVisible.value = false;
 
